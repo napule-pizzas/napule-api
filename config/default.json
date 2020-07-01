@@ -5,14 +5,15 @@
 
   "db": {
     "dbName": "napule",
-    "connString": "mongodb://localhost:27017",
+    "connString": "mongodb://niles:27017",
     "debug": true,
     "options": {
+      "useUnifiedTopology": true,
+      "useNewUrlParser": true,
       "poolSize": 5,
       "keepAlive": 100,
       "connectTimeoutMS": 5000,
       "bufferCommands": false,
-      "useNewUrlParser": true,
       "useFindAndModify": false,
       "useCreateIndex": true
     }
