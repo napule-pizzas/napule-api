@@ -1,4 +1,4 @@
-const User = require('./user.model').default;
+const User = require('./user.model');
 
 async function create(data) {
   const user = new User(data);
