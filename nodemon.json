@@ -1,0 +1,10 @@
+{
+  "verbose": true,
+  "ext": "js json",
+  "ignore": [
+    ".github/*",
+    "node_modules/*",
+    "*.md",
+    "test/*"
+  ]
+}
