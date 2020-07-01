@@ -11,4 +11,4 @@ router.post('/', ctrl.validateParams, ctrl.create);
 // router.patch('/:id', ctrl.validateParams, ctrl.update);
 // router.delete('/:id', ctrl.validateParams, ctrl.delete);
 
-export default router;
+module.exports = router;
