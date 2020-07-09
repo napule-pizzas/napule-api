@@ -23,7 +23,10 @@ app.use(express.urlencoded({ extended: false }));
 const expressJwt = require('express-jwt');
 app.use(
   expressJwt({ secret: config.secret }).unless({
-    path: [`/${config.apiVer}/auth`]
+    path: [
+      `/${config.apiVer}/auth`,
+      { url: `/${config.apiVer}/users`, methods: ['POST'] }
+    ]
   })
 );
 

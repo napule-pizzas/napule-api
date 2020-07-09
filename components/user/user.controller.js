@@ -1,4 +1,5 @@
 const Error = require('@hapi/boom');
+const toObjectOptions = require('../../libs/util');
 
 const userService = require('./user.service');
 
@@ -6,7 +7,7 @@ async function create(req, res, next) {
   try {
     const data = req.body;
     const user = await userService.create(data);
-    return res.status(201).json({ user });
+    return res.status(201).json(user.toObject(toObjectOptions));
   } catch (e) {
     return next(
       Error.badImplementation(e, {
@@ -21,7 +22,7 @@ async function get(req, res, next) {
   try {
     const _id = req.params.id;
     const user = await userService.get(_id);
-    return res.ok({ user });
+    return res.ok(user.toObject(toObjectOptions));
   } catch (e) {
     return next(
       Error.badImplementation(e, {
@@ -37,7 +38,7 @@ async function update(req, res, next) {
     const data = req.body;
     const _id = req.params.id;
     const user = await userService.update(_id, data);
-    return res.ok({ user });
+    return res.ok(user.toObject(toObjectOptions));
   } catch (e) {
     return next(
       Error.badImplementation(e, {

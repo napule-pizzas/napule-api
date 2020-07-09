@@ -5,7 +5,7 @@
 
   "db": {
     "dbName": "napule",
-    "connString": "mongodb://niles:27017",
+    "connString": "mongodb://localhost:27017",
     "debug": true,
     "options": {
       "useUnifiedTopology": true,

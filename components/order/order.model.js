@@ -7,8 +7,8 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema(
   {
     state: { type: String, required: true },
-    items: [{ quantity: Number, pizza: Pizza }],
-    customer: { type: User, required: true },
+    items: [{ quantity: Number, pizza: Pizza.schema }],
+    customer: { type: User.schema, required: true },
     totalItems: Number,
     deliveryDate: Date
   },

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const util = require('util');
 const express = require('express');
 const router = express.Router();
+const toObjectOptions = require('../../libs/util');
 
 const User = require('../user/user.model');
 
@@ -17,8 +18,8 @@ router.post('/', async (req, res) => {
     if (!user) {
       return res.status(401).json({ msg: 'user_unauthorized' });
     }
-    user = user.toObject();
-    const token = await signJWT({ id: user._id }, config.secret, {
+    user = user.toObject(toObjectOptions);
+    const token = await signJWT({ userId: user.id }, config.secret, {
       expiresIn: config.tokenExpir
     });
     res.send({ token, user });
@@ -28,10 +29,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-async function checkCredentials(username, pass) {
+async function checkCredentials(username, password) {
   const user = await User.findOne(
-    { $or: [{ email: username }, { phone: username }], pass },
-    { pass: 0, token: 0, apikey: 0 }
+    { $or: [{ email: username }, { phone: username }], password },
+    { password: 0, createdAt: 0, updatedAt: 0 }
   );
 
   return user;

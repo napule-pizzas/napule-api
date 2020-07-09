@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const ctrl = require('./order.controller').default;
+const ctrl = require('./order.controller');
 
 router.get('/', ctrl.validateParams, ctrl.get);
 router.post('/', ctrl.validateParams, ctrl.create);
