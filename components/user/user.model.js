@@ -7,17 +7,18 @@ const phone = require('phone');
 
 const userSchema = new Schema(
   {
+    active: { type: Boolean, default: false },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    emailConfirmationToken: { type: String, default: uuidv4() },
     phone: { type: String, required: true, unique: true },
     address: { type: String, required: true },
     city: { type: String, required: true },
-    passwordHash: { type: String, required: true },
-    passwordResetToken: String,
-    passwordResetExpiration: Date,
-    active: { type: Boolean, default: false, required: true }
+
+    emailConfirmationToken: { type: String, default: uuidv4(), select: false },
+    passwordHash: { type: String, select: false },
+    passwordResetToken: { String, select: false },
+    passwordResetExpiration: { Date, select: false }
   },
   { timestamps: true }
 );
@@ -45,10 +46,10 @@ userSchema
 userSchema.path('passwordHash').validate(function () {
   if (this._password || this._confirmation) {
     if (!validator.isLength(this._password, { min: 6, max: 12 })) {
-      this.invalidate('password', 'must be between 6 and 12 characters.');
+      this.invalidate('password', 'must be between 6 and 12 characters');
     }
     if (this._password !== this._confirmation) {
-      this.invalidate('confirmation', 'must match confirmation.');
+      this.invalidate('confirmation', 'must match password');
     }
   }
 

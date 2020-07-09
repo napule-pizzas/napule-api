@@ -1,6 +1,7 @@
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const util = require('util');
+const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const toObjectOptions = require('../../libs/util');
@@ -19,6 +20,9 @@ router.post('/', async (req, res) => {
       return res.status(401).json({ msg: 'user_unauthorized' });
     }
     user = user.toObject(toObjectOptions);
+
+    delete user.passwordHash;
+
     const token = await signJWT({ userId: user.id }, config.secret, {
       expiresIn: config.tokenExpir
     });
@@ -31,11 +35,16 @@ router.post('/', async (req, res) => {
 
 async function checkCredentials(username, password) {
   const user = await User.findOne(
-    { $or: [{ email: username }, { phone: username }], password },
-    { password: 0, createdAt: 0, updatedAt: 0 }
+    { $or: [{ email: username }, { phone: username }] },
+    '+passwordHash'
   );
 
-  return user;
+  if (user) {
+    const match = await bcrypt.compare(password, user.passwordHash);
+    return match ? user : null;
+  } else {
+    return null;
+  }
 }
 
 module.exports = router;

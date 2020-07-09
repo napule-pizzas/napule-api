@@ -6,8 +6,12 @@ const userService = require('./user.service');
 async function create(req, res, next) {
   try {
     const data = req.body;
-    const user = await userService.create(data);
-    return res.status(201).json(user.toObject(toObjectOptions));
+    let user = await userService.create(data);
+    user = user.toObject({ getters: true, virtuals: false, versionKey: false });
+    delete user.passwordHash;
+    delete user.emailConfirmationToken;
+
+    return res.status(201).json(user);
   } catch (e) {
     return next(
       Error.badImplementation(e, {
