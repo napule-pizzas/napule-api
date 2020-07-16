@@ -4,43 +4,37 @@
   "description": "Napule API",
   "main": "service.js",
   "scripts": {
-    "start": "nodemon bin/service.js",
+    "dev": "nodemon -r dotenv/config bin/service.js",
     "test": "mocha test"
   },
   "author": "Miguel Senosiain",
   "email": "msenosiain@gmail.com",
   "dependencies": {
     "@hapi/boom": "^9.0.0",
+    "@sendgrid/mail": "^7.2.1",
     "basic-auth": "^2.0.1",
     "bcrypt": "^5.0.0",
-    "body-parser": "^1.19.0",
-    "config": "^3.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.0",
     "express-jwt": "^5.3.1",
     "helmet": "^3.21.1",
-    "json-comments": "^0.2.1",
-    "json-parser": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mongoose": "^5.5.10",
     "multer": "^1.4.2",
     "phone": "^2.4.13",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7",
     "uuid": "^8.2.0",
     "validator": "^13.1.1",
     "winston": "^3.2.1"
   },
   "devDependencies": {
     "chai": "4.2.0",
+    "dotenv": "^8.2.0",
     "eslint": "^7.3.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "mocha": "7.2.0",
     "nodemon": "2.0.4",
-    "prettier": "^2.0.5",
-    "superagent": "5.2.2"
+    "prettier": "^2.0.5"
   }
 }
