@@ -1,4 +1,3 @@
-const config = require('config');
 const jwt = require('jsonwebtoken');
 const util = require('util');
 const bcrypt = require('bcrypt');
@@ -19,12 +18,17 @@ router.post('/', async (req, res) => {
     if (!user) {
       return res.status(401).json({ msg: 'user_unauthorized' });
     }
+
+    if (!user.active) {
+      return res.status(403).json({ msg: 'user_not_active' });
+    }
+
     user = user.toObject(toObjectOptions);
 
     delete user.passwordHash;
 
-    const token = await signJWT({ userId: user.id }, config.secret, {
-      expiresIn: config.tokenExpir
+    const token = await signJWT({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_TOKEN_EXP
     });
     res.send({ token, user });
   } catch (e) {

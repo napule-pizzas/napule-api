@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Pizza = require('../pizza/pizza.model');
-const User = require('../user/user.model');
+const User = require('../user/user.model').User;
 
 const Schema = mongoose.Schema;
 

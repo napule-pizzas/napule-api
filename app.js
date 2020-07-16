@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const config = require('config');
 
 const { logger, logReq, logRes } = require('./libs/logger');
 app.use(logReq);
@@ -21,11 +20,17 @@ app.use(express.urlencoded({ extended: false }));
 
 // JWT settings
 const expressJwt = require('express-jwt');
+
 app.use(
-  expressJwt({ secret: config.secret }).unless({
+  expressJwt({ secret: process.env.JWT_SECRET }).unless({
     path: [
-      `/${config.apiVer}/auth`,
-      { url: `/${config.apiVer}/users`, methods: ['POST'] }
+      `/${process.env.API_VER}/auth`,
+      { url: `/${process.env.API_VER}/users`, method: 'POST' },
+      {
+        url: new RegExp(`^/${process.env.API_VER}/users/inactive/.*`),
+        method: 'GET'
+      },
+      { url: `/${process.env.API_VER}/users/confirm`, method: 'POST' }
     ]
   })
 );
@@ -37,7 +42,7 @@ require('./routes')(app);
 
 const db = require('./libs/db/db.service');
 try {
-  db.connect(config).then(() => logger.info('db connected!'));
+  db.connect().then(() => logger.info('db connected!'));
 } catch (e) {
   logger.error(e);
 }

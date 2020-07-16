@@ -1,5 +1,3 @@
-const config = require('config');
-
 const loginRouter = require('./components/login/login.router.js');
 const usersRouter = require('./components/user/user.router.js');
 // const pizzasRouter  = require('./components/pizza/pizza.router');
@@ -8,7 +6,7 @@ const ordersRouter = require('./components/order/order.router');
 const logRes = require('./libs/logger').logRes;
 
 function init(app) {
-  const v = config.apiVer || 'v1';
+  const v = process.env.API_VER || 'v1';
 
   app.use(`/${v}/auth`, loginRouter);
 

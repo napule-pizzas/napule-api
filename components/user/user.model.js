@@ -5,6 +5,16 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 const phone = require('phone');
 
+const tokenSchema = new Schema({
+  _userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+  },
+  token: { type: String, default: uuidv4() },
+  createdAt: { type: Date, required: true, default: Date.now, expires: 43200 }
+});
+
 const userSchema = new Schema(
   {
     active: { type: Boolean, default: false },
@@ -15,13 +25,18 @@ const userSchema = new Schema(
     address: { type: String, required: true },
     city: { type: String, required: true },
 
-    emailConfirmationToken: { type: String, default: uuidv4(), select: false },
-    passwordHash: { type: String, select: false },
-    passwordResetToken: { String, select: false },
-    passwordResetExpiration: { Date, select: false }
+    passwordHash: { type: String, select: false }
   },
   { timestamps: true }
 );
+
+userSchema.virtual('mobile').set(function (value) {
+  const result = phone(this.phone, 'ARG', true);
+  this.phone = result[0];
+  if (value) {
+    this.phone = [this.phone.slice(0, 3), '9', this.phone.slice(3)].join('');
+  }
+});
 
 userSchema
   .virtual('password')
@@ -58,11 +73,7 @@ userSchema.path('passwordHash').validate(function () {
   }
 }, null);
 
-userSchema.pre('save', function (next) {
-  const result = phone(this.phone, 'ARG', true);
-  console.log('PHONE NORMALIZED!!!', result[0]);
-  this.phone = result[0];
-  next();
-});
+const User = mongoose.model('User', userSchema);
+const Token = mongoose.model('Token', tokenSchema);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = { User, Token };

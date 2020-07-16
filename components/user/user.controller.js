@@ -1,5 +1,7 @@
 const Error = require('@hapi/boom');
 const toObjectOptions = require('../../libs/util');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const userService = require('./user.service');
 
@@ -7,9 +9,22 @@ async function create(req, res, next) {
   try {
     const data = req.body;
     let user = await userService.create(data);
+    let token = await userService.createToken({ _userId: user._id });
+
+    // TODO: Send emails form separate service
+    const msg = {
+      to: user.email,
+      from: 'msenosiain@gmail.com',
+      subject: 'Confirmá Tu cuenta en napule-pizzas',
+      html: `<p>Hola ${user.firstName},</p>
+             <p>Porfa verificá tu cuenta haciendo click
+             <a href="http://localhost:4200/confirmation/${token.token}">acá</a></p>`
+    };
+
+    await sgMail.send(msg);
+
     user = user.toObject({ getters: true, virtuals: false, versionKey: false });
     delete user.passwordHash;
-    delete user.emailConfirmationToken;
 
     return res.status(201).json(user);
   } catch (e) {
@@ -32,6 +47,55 @@ async function get(req, res, next) {
       Error.badImplementation(e, {
         code: 91,
         msg: 'user_read'
+      })
+    );
+  }
+}
+
+async function getInactiveByToken(req, res, next) {
+  try {
+    const _token = req.params.token;
+    const token = await userService.getToken(_token);
+    if (!token) {
+      return res.status(400).send({
+        type: 'not-verified',
+        msg: 'We were unable to find a valid token. Your token my have expired.'
+      });
+    }
+    const user = await userService.get(token._userId);
+    if (!user) {
+      return res
+        .status(400)
+        .send({ msg: 'We were unable to find a user for this token.' });
+    }
+
+    if (user.active)
+      return res.status(400).send({
+        type: 'already-verified',
+        msg: 'This user has already been verified.'
+      });
+
+    return res.ok(user.toObject(toObjectOptions));
+  } catch (e) {
+    return next(
+      Error.badImplementation(e, {
+        code: 94,
+        msg: 'user_token_read'
+      })
+    );
+  }
+}
+
+async function confirm(req, res, next) {
+  try {
+    const _token = req.body.token;
+    const user = await userService.activateUser(_token);
+    return res.ok(user.toObject(toObjectOptions));
+  } catch (e) {
+    return next(
+      Error.badImplementation(e, {
+        code: 92,
+        msg: 'user_update'
       })
     );
   }
@@ -86,6 +150,8 @@ module.exports = {
   validateParams: (rq, rs, nt) => nt(), // TODO: implement data validation
   create,
   get,
+  getInactiveByToken,
+  confirm,
   update,
   remove
 };

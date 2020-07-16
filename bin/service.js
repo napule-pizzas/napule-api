@@ -5,13 +5,12 @@
  */
 const app = require('../app');
 const http = require('http');
-const config = require('config');
 const { logger } = require('../libs/logger');
 
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(config.get('port') || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 
 /**
  * Create HTTP server.
