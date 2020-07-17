@@ -25,7 +25,7 @@ app.use(
   expressJwt({ secret: process.env.JWT_SECRET }).unless({
     path: [
       `/${process.env.API_VER}/auth`,
-      { url: `/${process.env.API_VER}/users`, method: 'POST' },
+      { url: `/${process.env.API_VER}/users`, methods: ['POST', 'GET'] },
       {
         url: new RegExp(`^/${process.env.API_VER}/users/inactive/.*`),
         method: 'GET'
