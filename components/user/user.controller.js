@@ -6,6 +6,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const userService = require('./user.service');
 
 async function create(req, res, next) {
+  console.log('ACAAAAAAAAAAAAA', req.body);
   try {
     const data = req.body;
     let user = await userService.create(data);
