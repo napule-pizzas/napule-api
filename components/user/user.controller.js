@@ -6,7 +6,6 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const userService = require('./user.service');
 
 async function create(req, res, next) {
-  console.log('ACAAAAAAAAAAAAA', req.body);
   try {
     const data = req.body;
     let user = await userService.create(data);
@@ -19,7 +18,7 @@ async function create(req, res, next) {
       subject: 'Confirmá Tu cuenta en napule-pizzas',
       html: `<p>Hola ${user.firstName},</p>
              <p>Porfa verificá tu cuenta haciendo click
-             <a href="http://localhost:4200/confirmation/${token.token}">acá</a></p>`
+             <a href="${process.env.UI_BASE_URL}/confirmation/${token.token}">acá</a></p>`
     };
 
     await sgMail.send(msg);
