@@ -4,6 +4,7 @@
   "description": "Napule API",
   "main": "service.js",
   "scripts": {
+    "start": "node bin/service.js",
     "dev": "nodemon -r dotenv/config bin/service.js",
     "test": "mocha test"
   },
