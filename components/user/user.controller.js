@@ -14,7 +14,7 @@ async function create(req, res, next) {
     // TODO: Send emails form separate service
     const msg = {
       to: user.email,
-      from: 'msenosiain@gmail.com',
+      from: `${process.env.EMAIL_SENDER}`,
       subject: 'Confirmá Tu cuenta en napule-pizzas',
       html: `<p>Hola ${user.firstName},</p>
              <p>Porfa verificá tu cuenta haciendo click
