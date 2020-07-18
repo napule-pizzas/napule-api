@@ -3,17 +3,16 @@ const Schema = mongoose.Schema;
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const phone = require('phone');
+const { parsePhoneNumberFromString } = require('libphonenumber-js');
 
-const tokenSchema = new Schema({
-  _userId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'User'
+const tokenSchema = new Schema(
+  {
+    _userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    token: { type: String, default: uuidv4() },
+    createdAt: { type: Date, required: true, default: Date.now, expires: 86400 }
   },
-  token: { type: String, default: uuidv4() },
-  createdAt: { type: Date, required: true, default: Date.now, expires: 43200 }
-});
+  { timestamps: true }
+);
 
 const userSchema = new Schema(
   {
@@ -30,13 +29,12 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.virtual('mobile').set(function (value) {
-  const result = phone(this.phone, 'ARG', true);
-  this.phone = result[0];
-  if (value) {
-    this.phone = [this.phone.slice(0, 3), '9', this.phone.slice(3)].join('');
-  }
-});
+userSchema.path('phone').validate(function (value) {
+  const phoneNumber = parsePhoneNumberFromString(value, 'AR');
+  this.phone = phoneNumber.formatNational();
+
+  return phoneNumber.isValid();
+}, 'Invalid phone number');
 
 userSchema
   .virtual('password')

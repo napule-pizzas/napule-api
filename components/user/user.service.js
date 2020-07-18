@@ -1,5 +1,4 @@
-const User = require('./user.model').User;
-const Token = require('./user.model').Token;
+const { User, Token } = require('./user.model');
 
 async function create(data) {
   const user = new User(data);

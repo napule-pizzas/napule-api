@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const toObjectOptions = require('../../libs/util');
 
-const User = require('../user/user.model');
+const { User } = require('../user/user.model');
 
 const signJWT = util.promisify(jwt.sign);
 

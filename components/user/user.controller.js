@@ -15,10 +15,11 @@ async function create(req, res, next) {
     const msg = {
       to: user.email,
       from: `${process.env.EMAIL_SENDER}`,
-      subject: 'Confirmá Tu cuenta en napule-pizzas',
+      subject: 'Confirmá tu nueva cuenta en Napule',
       html: `<p>Hola ${user.firstName},</p>
              <p>Porfa verificá tu cuenta haciendo click
-             <a href="${process.env.UI_BASE_URL}/confirmation/${token.token}">acá</a></p>`
+             <a href="${process.env.UI_BASE_URL}/confirmation/${token.token}">acá</a></p>
+             <p>Tené en cuenta que el link vence en 24 horas.</p>`
     };
 
     await sgMail.send(msg);

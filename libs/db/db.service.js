@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.set('debug', true);
+mongoose.set('debug', process.env.NODE_ENV === 'production');
 
 async function connect() {
   const options = {
