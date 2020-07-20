@@ -3,8 +3,14 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function sendConfirmationEmail(user, token) {
   const msg = {
-    to: user.email,
-    from: `${process.env.EMAIL_SENDER}`,
+    to: {
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email
+    },
+    from: {
+      name: 'Napule',
+      email: `${process.env.EMAIL_SENDER}`
+    },
     subject: 'Confirmá tu nueva cuenta en Napule',
     html: `<p>Hola ${user.firstName},</p>
              <p>Porfa verificá tu cuenta haciendo click
