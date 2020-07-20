@@ -12,10 +12,8 @@ app.use(helmet.xssFilter());
 app.use(helmet.ieNoOpen());
 
 const cors = require('cors');
-const allowedOrigins = [
-  'http://pedidos.napule.tk',
-  'https://napule-orders-ui.herokuapp.com'
-];
+const allowedOrigins = [process.env.UI_BASE_URL];
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -24,8 +22,7 @@ app.use(
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
         var msg =
-          'The CORS policy for this site does not ' +
-          'allow access from the specified Origin.';
+          'The CORS policy for this site does not allow access from the specified Origin.';
         return callback(new Error(msg), false);
       }
       return callback(null, true);
