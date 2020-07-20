@@ -1,8 +1,6 @@
 const Error = require('@hapi/boom');
 const toObjectOptions = require('../../libs/util');
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
+const { sendConfirmationEmail } = require('../../libs/email');
 const userService = require('./user.service');
 
 async function create(req, res, next) {
@@ -11,18 +9,7 @@ async function create(req, res, next) {
     let user = await userService.create(data);
     let token = await userService.createToken({ _userId: user._id });
 
-    // TODO: Send emails form separate service
-    const msg = {
-      to: user.email,
-      from: `${process.env.EMAIL_SENDER}`,
-      subject: 'Confirmá tu nueva cuenta en Napule',
-      html: `<p>Hola ${user.firstName},</p>
-             <p>Porfa verificá tu cuenta haciendo click
-             <a href="${process.env.UI_BASE_URL}/confirmation/${token.token}">acá</a></p>
-             <p>Tené en cuenta que el link vence en 24 horas.</p>`
-    };
-
-    await sgMail.send(msg);
+    await sendConfirmationEmail(user, token);
 
     user = user.toObject({ getters: true, virtuals: false, versionKey: false });
     delete user.passwordHash;
@@ -80,7 +67,7 @@ async function getInactiveByToken(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 94,
+        code: 92,
         msg: 'user_token_read'
       })
     );
@@ -95,8 +82,34 @@ async function confirm(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 92,
+        code: 93,
         msg: 'user_update'
+      })
+    );
+  }
+}
+
+async function resend(req, res, next) {
+  try {
+    const _id = req.params.id;
+    const user = await userService.get(_id);
+
+    if (user.active)
+      return res.status(400).send({
+        type: 'already-verified',
+        msg: 'This user has already been verified.'
+      });
+
+    let token = await userService.createToken({ _userId: user._id });
+
+    await sendConfirmationEmail(user, token);
+
+    return res.status(200).json({ msg: 'Confirmation email sent' });
+  } catch (e) {
+    return next(
+      Error.badImplementation(e, {
+        code: 94,
+        msg: 'resend_confirmation_email'
       })
     );
   }
@@ -111,7 +124,7 @@ async function update(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 92,
+        code: 95,
         msg: 'user_update'
       })
     );
@@ -126,7 +139,7 @@ async function remove(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 93,
+        code: 96,
         msg: 'user_delete'
       })
     );
@@ -153,6 +166,7 @@ module.exports = {
   get,
   getInactiveByToken,
   confirm,
+  resend,
   update,
   remove
 };

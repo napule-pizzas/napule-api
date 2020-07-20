@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     }
 
     if (!user.active) {
-      return res.status(403).json({ msg: 'user_not_active' });
+      return res.status(403).json({ msg: 'user_not_active', id: user.id });
     }
 
     user = user.toObject(toObjectOptions);

@@ -9,6 +9,7 @@ router.get('/inactive/:token', ctrl.validateParams, ctrl.getInactiveByToken);
 router.patch('/:id', ctrl.validateParams, ctrl.update);
 router.post('/', ctrl.validateParams, ctrl.create);
 router.post('/confirm', ctrl.validateParams, ctrl.confirm);
+router.get('/resend/:id', ctrl.validateParams, ctrl.resend);
 // router.post('/confirmation', ctrl.confirmationPost);
 // router.post('/resend', ctrl.resendTokenPost);
 
