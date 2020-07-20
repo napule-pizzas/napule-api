@@ -41,7 +41,7 @@ app.use(express.urlencoded({ extended: false }));
 const expressJwt = require('express-jwt');
 
 app.use(
-  expressJwt({ secret: process.env.JWT_SECRET }).unless({
+  expressJwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }).unless({
     path: [
       { url: `/${process.env.API_VER}/auth`, method: 'POST' },
       { url: `/${process.env.API_VER}/users`, method: 'POST' },
