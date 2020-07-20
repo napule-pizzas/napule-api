@@ -13,9 +13,9 @@ async function sendConfirmationEmail(user, token) {
     },
     subject: 'Confirmá tu nueva cuenta en Napule',
     html: `<p>Hola ${user.firstName},</p>
-             <p>Porfa verificá tu cuenta haciendo click
-             <a href="${process.env.UI_BASE_URL}/confirmation/${token.token}">acá</a></p>
-             <p>Tené en cuenta que el link vence en 24 horas.</p>`
+           <p>Porfa verificá tu cuenta haciendo click
+           <a href="${process.env.UI_BASE_URL}/confirmation/${token.token}" alt="Click aca para verificar tu cuenta.">acá</a></p>
+           <p>Tené en cuenta que el link vence en 24 horas.</p>`
   };
 
   return sgMail.send(msg);

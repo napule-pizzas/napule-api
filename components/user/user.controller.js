@@ -1,4 +1,5 @@
 const Error = require('@hapi/boom');
+const crypto = require('crypto');
 const toObjectOptions = require('../../libs/util');
 const { sendConfirmationEmail } = require('../../libs/email');
 const userService = require('./user.service');
@@ -7,7 +8,10 @@ async function create(req, res, next) {
   try {
     const data = req.body;
     let user = await userService.create(data);
-    let token = await userService.createToken({ _userId: user._id });
+    let token = await userService.createToken({
+      _userId: user._id,
+      token: crypto.randomBytes(16).toString('hex')
+    });
 
     await sendConfirmationEmail(user, token);
 

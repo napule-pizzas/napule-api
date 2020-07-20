@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const { parsePhoneNumberFromString } = require('libphonenumber-js');
@@ -8,7 +7,7 @@ const { parsePhoneNumberFromString } = require('libphonenumber-js');
 const tokenSchema = new Schema(
   {
     _userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
-    token: { type: String, default: uuidv4() },
+    token: { type: String, required: true },
     createdAt: { type: Date, required: true, default: Date.now, expires: 86400 }
   },
   { timestamps: true }
