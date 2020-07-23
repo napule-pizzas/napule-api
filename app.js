@@ -12,7 +12,11 @@ app.use(helmet.xssFilter());
 app.use(helmet.ieNoOpen());
 
 const cors = require('cors');
-const allowedOrigins = [process.env.UI_BASE_URL, process.env.MP_API_URL];
+const allowedOrigins = [
+  process.env.UI_BASE_URL,
+  process.env.MP_API_URL,
+  'https://mercadopago.com.ar'
+];
 
 app.use(
   cors({
