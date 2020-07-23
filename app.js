@@ -12,7 +12,7 @@ app.use(helmet.xssFilter());
 app.use(helmet.ieNoOpen());
 
 const cors = require('cors');
-const allowedOrigins = [process.env.UI_BASE_URL];
+const allowedOrigins = [process.env.UI_BASE_URL, process.env.MP_API_URL];
 
 app.use(
   cors({
@@ -50,7 +50,8 @@ app.use(
       {
         url: new RegExp(`^/${process.env.API_VER}/users/resend/.*`),
         method: 'GET'
-      }
+      },
+      { url: `/${process.env.API_VER}/payments/webhooks`, method: 'POST' }
     ]
   })
 );
