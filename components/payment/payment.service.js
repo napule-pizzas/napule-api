@@ -46,9 +46,9 @@ function buildPreference(data) {
       default_installments: 1
     },
     back_urls: {
-      success: `${process.env.UI_BASE_URL}/payment/ok`,
-      pending: `${process.env.UI_BASE_URL}/payment/pending`,
-      failure: `${process.env.UI_BASE_URL}/payment/error`
+      success: `${process.env.UI_BASE_URL}/payments`,
+      pending: `${process.env.UI_BASE_URL}/payments`,
+      failure: `${process.env.UI_BASE_URL}/payments`
     },
     notification_url: `${process.env.API_URL}:${process.env.PORT}/${process.env.API_VER}/payments/webhook`,
     auto_return: 'approved'
