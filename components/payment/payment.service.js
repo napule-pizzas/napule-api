@@ -3,8 +3,8 @@ function buildPreference(data) {
   const mpItems = _buildPreferenceItems(items);
   const excludedPaymentTypes = [
     { id: 'ticket' },
-    { id: 'atm' },
-    { id: 'credit_card' }
+    { id: 'atm' }
+    // { id: 'credit_card' }
   ];
 
   const testCustomer = {
