@@ -22,8 +22,8 @@ class BaseError extends Error {
 class ApiError extends BaseError {
   constructor(type, params) {
     const errors = {
-      BAD_REQUEST: { status: 400, code: 10, msg: 'invalid_data' },
-      INVALID_JSON: { status: 400, code: 11, msg: 'invalid_json' }
+      BAD_REQUEST: { status: 400, msg: 'invalid_data' },
+      INVALID_JSON: { status: 400, msg: 'invalid_json' }
     };
     const err = errors[type] || errors.BAD_REQUEST;
     super(err, params);

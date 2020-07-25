@@ -22,7 +22,6 @@ async function create(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 90,
         msg: 'user_create'
       })
     );
@@ -37,7 +36,6 @@ async function get(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 91,
         msg: 'user_read'
       })
     );
@@ -71,7 +69,6 @@ async function getInactiveByToken(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 92,
         msg: 'user_token_read'
       })
     );
@@ -86,7 +83,6 @@ async function confirm(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 93,
         msg: 'user_update'
       })
     );
@@ -112,7 +108,6 @@ async function resend(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 94,
         msg: 'resend_confirmation_email'
       })
     );
@@ -128,7 +123,6 @@ async function update(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 95,
         msg: 'user_update'
       })
     );
@@ -143,7 +137,6 @@ async function remove(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 96,
         msg: 'user_delete'
       })
     );
@@ -158,7 +151,6 @@ async function remove(req, res, next) {
 //         return res.ok({ success: true, users });
 //     } catch (e) {
 //         return next(Error.badImplementation(e, {
-//             code: 24,
 //             msg: 'user_list'
 //         }));
 //     }

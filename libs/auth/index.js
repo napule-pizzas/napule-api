@@ -17,7 +17,6 @@ async function checkCredentials(req, res, next) {
   ) {
     return next(
       Error.forbidden('invalid credentials', {
-        code: 1,
         msg: 'auth_access_forbidden'
       })
     );
@@ -28,7 +27,6 @@ async function checkCredentials(req, res, next) {
   if (!types.ObjectId.isValid(userId)) {
     return next(
       Error.unauthorized('invalid_apikey', {
-        code: 2,
         msg: 'auth_invalid_apikey'
       })
     );
@@ -38,20 +36,20 @@ async function checkCredentials(req, res, next) {
     const user = await findUserByApiKey(userId, token);
     if (!user) {
       return next(
-        Error.unauthorized('perm_denied', { code: 3, msg: 'auth_perm_denied' })
+        Error.unauthorized('perm_denied', { msg: 'auth_perm_denied' })
       );
     }
 
     if (user.token !== token) {
       return next(
-        Error.unauthorized('perm_denied', { code: 4, msg: 'auth_perm_denied' })
+        Error.unauthorized('perm_denied', { msg: 'auth_perm_denied' })
       );
     }
 
     req.user = user;
   } catch (e) {
     return next(
-      Error.badImplementation(e.message, { code: 4, msg: 'auth_unknown_err' })
+      Error.badImplementation(e.message, { msg: 'auth_unknown_err' })
     );
   }
 

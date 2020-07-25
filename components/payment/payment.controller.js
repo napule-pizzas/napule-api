@@ -19,7 +19,6 @@ async function create(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 96,
         msg: 'payment_create'
       })
     );

@@ -10,7 +10,6 @@ async function create(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 90,
         msg: 'order_create'
       })
     );
@@ -25,7 +24,6 @@ async function get(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 91,
         msg: 'order_read'
       })
     );
@@ -41,7 +39,6 @@ async function update(req, res, next) {
   } catch (e) {
     return next(
       Error.badImplementation(e, {
-        code: 92,
         msg: 'order_update'
       })
     );
