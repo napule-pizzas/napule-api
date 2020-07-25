@@ -7,13 +7,13 @@ function buildPreference(data) {
     // { id: 'credit_card' }
   ];
 
-  const testCustomer = {
-    id: 613497413,
-    nickname: 'TESTRQFT8LGC',
-    password: 'qatest3623',
-    site_status: 'active',
-    email: 'test_user_34339199@testuser.com'
-  };
+  // const testCustomer = {
+  //   id: 613497413,
+  //   nickname: 'TESTRQFT8LGC',
+  //   password: 'qatest3623',
+  //   site_status: 'active',
+  //   email: 'test_user_34339199@testuser.com'
+  // };
 
   // const testSeller = {
   //   id: 614352138,
@@ -29,7 +29,7 @@ function buildPreference(data) {
     payer: {
       name: customer.firstName,
       surname: customer.lastName,
-      email: testCustomer.email,
+      email: customer.email,
       phone: {
         area_code: customer.phone.areaCode,
         number: customer.phone.number

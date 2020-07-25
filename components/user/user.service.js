@@ -5,8 +5,8 @@ async function create(data) {
   return user.save();
 }
 
-async function createToken(userId) {
-  const token = new Token(userId);
+async function createToken(data) {
+  const token = new Token(data);
   return token.save();
 }
 
