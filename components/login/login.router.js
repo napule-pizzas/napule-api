@@ -3,7 +3,6 @@ const util = require('util');
 const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
-const toObjectOptions = require('../../libs/util');
 
 const { User } = require('../user/user.model');
 
@@ -13,24 +12,25 @@ router.post('/', async (req, res) => {
   const data = req.body;
 
   try {
-    let user = await checkCredentials(data.username, data.password);
+    let authUser = await checkCredentials(data.username, data.password);
 
-    if (!user) {
+    if (!authUser) {
       return res.status(401).json({ msg: 'user_unauthorized' });
     }
 
-    if (!user.active) {
-      return res.status(403).json({ msg: 'user_not_active', id: user.id });
+    if (!authUser.active) {
+      return res.status(403).json({ msg: 'user_not_active', id: authUser.id });
     }
 
-    user = user.toObject(toObjectOptions);
-
-    delete user.passwordHash;
-
-    const token = await signJWT({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_TOKEN_EXP
-    });
-    res.send({ token, user });
+    const token = await signJWT(
+      { userId: authUser.id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_TOKEN_EXP
+      }
+    );
+    const { _id, user } = authUser.toObject();
+    res.send({ token, user: { id: _id, ...user } });
   } catch (e) {
     console.log('-- ERROR: ', e);
     return res.status(400).json({});
@@ -38,14 +38,14 @@ router.post('/', async (req, res) => {
 });
 
 async function checkCredentials(username, password) {
-  const user = await User.findOne(
-    { $or: [{ email: username }, { phone: username }] },
+  const authUser = await User.findOne(
+    { 'user.email': username },
     '+passwordHash'
   );
 
-  if (user) {
-    const match = await bcrypt.compare(password, user.passwordHash);
-    return match ? user : null;
+  if (authUser) {
+    const match = await bcrypt.compare(password, authUser.passwordHash);
+    return match ? authUser : null;
   } else {
     return null;
   }

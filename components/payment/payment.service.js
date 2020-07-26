@@ -32,7 +32,7 @@ function buildPreference(data) {
       email: customer.email,
       phone: {
         area_code: customer.phone.areaCode,
-        number: customer.phone.number
+        number: customer.phone.localNumber
       },
       address: {
         zip_code: customer.address.zipCode,

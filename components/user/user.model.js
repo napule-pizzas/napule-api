@@ -16,20 +16,27 @@ const tokenSchema = new Schema(
   { timestamps: true }
 );
 
+const citySchema = new Schema(
+  {
+    name: { type: String, required: true },
+    zipCode: { type: String, required: true }
+  },
+  { _id: false }
+);
+
 const addressSchema = new Schema(
   {
-    zipCode: { type: String, required: true },
     street: { type: String, required: true },
-    number: { type: Number, required: true },
-    city: { type: String, required: true }
+    number: { type: String, required: true },
+    city: { type: citySchema, required: true }
   },
   { _id: false }
 );
 
 const phoneSchema = new Schema(
   {
-    areaCode: { type: Number, required: true },
-    number: { type: Number, required: true }
+    areaCode: { type: String, required: true },
+    localNumber: { type: String, required: true }
   },
   { _id: false }
 );
@@ -39,10 +46,8 @@ const validateEmail = function (email) {
   return EMAIL_REGEX.test(email);
 };
 
-const userSchema = new Schema(
+const personSchema = new Schema(
   {
-    active: { type: Boolean, default: false },
-    type: { type: String, required: true, uppercase: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: {
@@ -54,15 +59,24 @@ const userSchema = new Schema(
       validate: [validateEmail, 'email address invalid'],
       match: [EMAIL_REGEX, 'email address invalid']
     },
-    phone: { type: phoneSchema, required: true, unique: true },
-    address: { type: addressSchema, required: true },
+    phone: { type: phoneSchema, required: true },
+    address: { type: addressSchema, required: true }
+  },
+  { id_: false }
+);
+
+const userSchema = new Schema(
+  {
+    active: { type: Boolean, default: false },
+    type: { type: String, required: true, uppercase: true },
+    user: { type: personSchema, required: true, _id: false },
     passwordHash: { type: String, select: false }
   },
   { timestamps: true }
 );
 
-userSchema.path('phone').validate(function (value) {
-  const phone = `${value.areaCode}${value.number}`;
+personSchema.path('phone').validate(function (value) {
+  const phone = value.areaCode + value.localNumber;
   const phoneNumber = parsePhoneNumberFromString(phone, 'AR');
   return phoneNumber.isValid();
 }, 'Invalid phone number');
@@ -102,7 +116,10 @@ userSchema.path('passwordHash').validate(function () {
   }
 }, null);
 
+// const Address = mongoose.model('Address', addressSchema);
+// const Phone = mongoose.model('Phone', phoneSchema);
+const Person = mongoose.model('Person', personSchema);
 const User = mongoose.model('User', userSchema);
 const Token = mongoose.model('Token', tokenSchema);
 
-module.exports = { User, Token };
+module.exports = { Person, User, Token };

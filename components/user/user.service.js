@@ -23,8 +23,18 @@ async function activateUser(_token) {
   return User.findByIdAndUpdate(token._userId, { active: true }, { new: true });
 }
 
+async function updateAddress(userId, address) {
+  return User.findOneAndUpdate(
+    userId,
+    { 'user.address': address },
+    {
+      new: true
+    }
+  );
+}
+
 async function update(userId, data) {
-  return User.findByIdAndUpdate(userId, data, {
+  return User.findOneAndUpdate(userId, data, {
     new: true
   });
 }
@@ -39,6 +49,7 @@ module.exports = {
   get,
   getToken,
   activateUser,
+  updateAddress,
   update,
   remove
 };
