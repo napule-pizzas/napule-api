@@ -54,7 +54,6 @@ const personSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
-      unique: true,
       required: true,
       validate: [validateEmail, 'email address invalid'],
       match: [EMAIL_REGEX, 'email address invalid']
@@ -80,6 +79,15 @@ personSchema.path('phone').validate(function (value) {
   const phoneNumber = parsePhoneNumberFromString(phone, 'AR');
   return phoneNumber.isValid();
 }, 'Invalid phone number');
+
+userSchema.path('user.email').validate(async function (value) {
+  const docs = await mongoose
+    .model('User', userSchema)
+    .countDocuments({ 'user.email': value })
+    .exec();
+
+  return docs === 0;
+}, 'Email already exists');
 
 userSchema
   .virtual('password')
