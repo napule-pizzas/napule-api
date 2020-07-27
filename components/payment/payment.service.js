@@ -32,12 +32,12 @@ function buildPreference(data) {
       email: customer.email,
       phone: {
         area_code: customer.phone.areaCode,
-        number: customer.phone.localNumber
+        number: Number(customer.phone.localNumber)
       },
       address: {
         zip_code: customer.address.zipCode,
         street_name: customer.address.street,
-        street_number: customer.address.number
+        street_number: Number(customer.address.number)
       }
     },
     payment_methods: {

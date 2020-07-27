@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const { Person } = require('../user/user.model');
+const { personSchema } = require('../user/user.model');
+const Pizza = require('../pizza/pizza.model');
 
 const Schema = mongoose.Schema;
 
@@ -10,10 +11,10 @@ const orderSchema = new Schema(
       {
         _id: false,
         quantity: Number,
-        pizza: { type: Schema.Types.ObjectId, required: true, ref: 'Pizza' }
+        pizza: { type: Pizza.schema, required: true, _id: false }
       }
     ],
-    customer: { type: Person.schema, required: true, _id: false },
+    customer: { type: personSchema, required: true, _id: false },
     totalItems: Number,
     totalAmount: Number,
     deliveryDate: Date

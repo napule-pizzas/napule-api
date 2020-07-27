@@ -46,6 +46,7 @@ app.use(
     path: [
       { url: `/${process.env.API_VER}/auth`, method: 'POST' },
       { url: `/${process.env.API_VER}/users`, method: 'POST' },
+      { url: `/${process.env.API_VER}/pizzas`, method: 'GET' },
       {
         url: new RegExp(`^/${process.env.API_VER}/users/inactive/.*`),
         method: 'GET'

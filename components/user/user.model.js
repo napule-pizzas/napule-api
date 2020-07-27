@@ -116,10 +116,7 @@ userSchema.path('passwordHash').validate(function () {
   }
 }, null);
 
-// const Address = mongoose.model('Address', addressSchema);
-// const Phone = mongoose.model('Phone', phoneSchema);
-const Person = mongoose.model('Person', personSchema);
 const User = mongoose.model('User', userSchema);
 const Token = mongoose.model('Token', tokenSchema);
 
-module.exports = { Person, User, Token };
+module.exports = { personSchema, User, Token };

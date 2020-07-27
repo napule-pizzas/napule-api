@@ -6,7 +6,7 @@ async function create(req, res, next) {
   try {
     const data = req.body;
     const order = await orderService.create(data);
-    return res.status(201).json({ order });
+    return res.status(201).json(order.toObject());
   } catch (e) {
     return next(
       Error.badImplementation(e, {

@@ -1,6 +1,5 @@
 const Error = require('@hapi/boom');
 const crypto = require('crypto');
-const toObjectOptions = require('../../libs/util');
 const { sendConfirmationEmail } = require('../../libs/email');
 const userService = require('./user.service');
 
@@ -28,8 +27,9 @@ async function create(req, res, next) {
 async function get(req, res, next) {
   try {
     const _id = req.params.id;
-    const user = await userService.get(_id);
-    return res.ok(user.toObject(toObjectOptions));
+    const authUser = await userService.get(_id);
+    const { user } = authUser.toObject();
+    return res.ok({ id: _id, ...user });
   } catch (e) {
     return next(
       Error.badImplementation(e, {
