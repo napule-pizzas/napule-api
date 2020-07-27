@@ -1,5 +1,5 @@
 const Error = require('@hapi/boom');
-const toObjectOptions = require('../../libs/util');
+const { toObjectOptions } = require('../../libs/util');
 
 const orderService = require('./order.service');
 

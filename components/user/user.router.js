@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { validateReCaptcha } = require('../../libs/util');
+
 const ctrl = require('./user.controller');
 
 router.get('/', ctrl.validateParams, ctrl.get);
@@ -8,7 +10,7 @@ router.get('/:id', ctrl.validateParams, ctrl.get);
 router.get('/inactive/:token', ctrl.validateParams, ctrl.getInactiveByToken);
 router.patch('/:id', ctrl.validateParams, ctrl.update);
 router.patch('/:id/address', ctrl.validateParams, ctrl.updateAddress);
-router.post('/', ctrl.validateParams, ctrl.create);
+router.post('/', ctrl.validateParams, validateReCaptcha, ctrl.create);
 router.post('/confirm', ctrl.validateParams, ctrl.confirm);
 router.get('/resend/:id', ctrl.validateParams, ctrl.resend);
 // router.post('/confirmation', ctrl.confirmationPost);
