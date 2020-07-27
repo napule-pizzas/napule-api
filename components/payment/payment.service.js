@@ -3,8 +3,8 @@ function buildPreference(data) {
   const mpItems = _buildPreferenceItems(items);
   const excludedPaymentTypes = [
     { id: 'ticket' },
-    { id: 'atm' }
-    // { id: 'credit_card' }
+    { id: 'atm' },
+    { id: 'credit_card' }
   ];
 
   // const testCustomer = {
@@ -66,7 +66,7 @@ function _buildPreferenceItems(items) {
       category_id: 'pizzas',
       quantity,
       currency_id: 'ARS',
-      unit_price: 1 // pizza.price
+      unit_price: pizza.price
     };
   });
 }
