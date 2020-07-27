@@ -74,7 +74,8 @@ try {
 }
 
 // Error handler
-app.use((err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
   logRes(req, err);
 
@@ -84,7 +85,7 @@ app.use((err, req, res) => {
   }
 
   if (err.isServer) {
-    return res.status(500).json(err.data);
+    return res.status(500).json({ type: err.name, errors: err.errors });
   }
 
   // set locals, only providing error in development
