@@ -1,4 +1,5 @@
 const Error = require('@hapi/boom');
+const mcache = require('memory-cache');
 
 const pizzaService = require('./pizza.service');
 
@@ -73,7 +74,26 @@ async function list(req, res, next) {
   }
 }
 
+function cache(duration) {
+  return function (req, res, next) {
+    let key = '__express__' + req.originalUrl || req.url;
+    let cachedBody = mcache.get(key);
+    if (cachedBody) {
+      res.ok(cachedBody);
+      return;
+    } else {
+      res.sendResponse = res.send;
+      res.ok = function (body) {
+        mcache.put(key, body, duration * 1000);
+        res.sendResponse(body);
+      };
+      next();
+    }
+  };
+}
+
 module.exports = {
   validateParams: (req, res, nt) => nt(), // TODO: implement data validation
+  cache,
   list
 };

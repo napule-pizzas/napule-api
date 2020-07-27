@@ -3,7 +3,7 @@ const router = express.Router();
 
 const ctrl = require('./pizza.controller');
 
-router.get('/', ctrl.validateParams, ctrl.list);
+router.get('/', ctrl.validateParams, ctrl.cache(3600), ctrl.list);
 
 // @@ TODO: move these endpoints to admin
 // router.post('/', ctrl.validateParams, ctrl.create);
