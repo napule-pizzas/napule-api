@@ -25,7 +25,7 @@ function buildPreference(data) {
 
   return {
     items: [...mpItems],
-    external_reference: `preference-order-${id}`,
+    external_reference: `pedido-${id}`,
     payer: {
       name: customer.firstName,
       surname: customer.lastName,

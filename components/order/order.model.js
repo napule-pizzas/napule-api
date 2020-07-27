@@ -11,7 +11,7 @@ const orderSchema = new Schema(
       {
         _id: false,
         quantity: Number,
-        pizza: { type: Pizza.schema, required: true, _id: false }
+        pizza: { type: Pizza.schema, required: true }
       }
     ],
     customer: { type: personSchema, required: true, _id: false },

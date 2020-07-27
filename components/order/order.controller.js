@@ -1,4 +1,5 @@
 const Error = require('@hapi/boom');
+const toObjectOptions = require('../../libs/util');
 
 const orderService = require('./order.service');
 
@@ -6,7 +7,7 @@ async function create(req, res, next) {
   try {
     const data = req.body;
     const order = await orderService.create(data);
-    return res.status(201).json(order.toObject());
+    return res.status(201).json(order.toObject(toObjectOptions));
   } catch (e) {
     return next(
       Error.badImplementation(e, {
