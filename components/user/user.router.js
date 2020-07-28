@@ -5,7 +5,7 @@ const { validateReCaptcha } = require('../../libs/util');
 
 const ctrl = require('./user.controller');
 
-router.get('/', ctrl.validateParams, ctrl.get);
+router.get('/', ctrl.validateParams, ctrl.getByEmail);
 router.get('/:id', ctrl.validateParams, ctrl.get);
 router.get('/inactive/:token', ctrl.validateParams, ctrl.getInactiveByToken);
 router.patch('/:id', ctrl.validateParams, ctrl.update);

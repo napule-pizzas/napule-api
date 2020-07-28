@@ -39,6 +39,29 @@ async function get(req, res, next) {
   }
 }
 
+async function getByEmail(req, res, next) {
+  try {
+    const email = req.query.email;
+    if (email) {
+      const authUser = await userService.getByEmail(email);
+      if (authUser) {
+        const { user } = authUser.toObject();
+        return res.ok({ id: authUser._id, ...user });
+      } else {
+        res.ok(null);
+      }
+    } else {
+      next();
+    }
+  } catch (e) {
+    return next(
+      Error.badImplementation(e, {
+        msg: 'user_read'
+      })
+    );
+  }
+}
+
 async function getInactiveByToken(req, res, next) {
   try {
     const _token = req.params.token;
@@ -174,6 +197,7 @@ module.exports = {
   validateParams: (rq, rs, nt) => nt(), // TODO: implement data validation
   create,
   get,
+  getByEmail,
   getInactiveByToken,
   confirm,
   resend,

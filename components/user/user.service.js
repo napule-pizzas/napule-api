@@ -14,6 +14,10 @@ async function get(userId) {
   return User.findById(userId, { pass: 0, token: 0, apikey: 0 });
 }
 
+async function getByEmail(email) {
+  return User.findOne({ 'user.email': email });
+}
+
 async function getToken(token) {
   return Token.findOne({ token });
 }
@@ -47,6 +51,7 @@ module.exports = {
   create,
   createToken,
   get,
+  getByEmail,
   getToken,
   activateUser,
   updateAddress,
