@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 
 const Schema = mongoose.Schema;
 
@@ -12,5 +13,7 @@ const pizzaSchema = Schema(
   },
   { timestamps: true }
 );
+
+pizzaSchema.plugin(mongooseLeanVirtuals);
 
 module.exports = mongoose.model('Pizza', pizzaSchema);

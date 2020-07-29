@@ -18,7 +18,7 @@ async function remove(orderId) {
 }
 
 async function list() {
-  return Pizza.find({});
+  return Pizza.find({}).lean({ virtuals: true });
 }
 
 module.exports = {
