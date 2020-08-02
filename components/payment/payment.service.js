@@ -3,7 +3,7 @@ const Payment = require('./payment.model');
 function buildPreference(data) {
   const { id, items, customer } = data;
   const mpItems = _buildPreferenceItems(items);
-  const excludedPaymentTypes = [{ id: 'ticket' }, { id: 'atm' }, { id: 'credit_card' }];
+  const excludedPaymentTypes = [{ id: 'ticket' }, { id: 'atm' }]; // ,{ id: 'credit_card' }
 
   const testCustomer = {
     id: 613497413,
