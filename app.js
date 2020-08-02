@@ -12,11 +12,7 @@ app.use(helmet.xssFilter());
 app.use(helmet.ieNoOpen());
 
 const cors = require('cors');
-const allowedOrigins = [
-  process.env.UI_BASE_URL,
-  process.env.MP_API_URL,
-  'https://mercadopago.com.ar'
-];
+const allowedOrigins = [process.env.UI_BASE_URL, process.env.MP_API_URL, 'https://mercadopago.com.ar'];
 
 app.use(
   cors({
@@ -25,8 +21,7 @@ app.use(
       // (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
-        var msg =
-          'The CORS policy for this site does not allow access from the specified Origin.';
+        var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
         return callback(new Error(msg), false);
       }
       return callback(null, true);
@@ -57,7 +52,7 @@ app.use(
         url: new RegExp(`^/${process.env.API_VER}/users/resend/.*`),
         method: 'GET'
       },
-      { url: `/${process.env.API_VER}/payments/webhooks`, method: 'POST' }
+      { url: `/${process.env.API_VER}/payments/webhook`, method: 'POST' }
     ]
   })
 );
