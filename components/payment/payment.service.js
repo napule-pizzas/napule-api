@@ -7,6 +7,7 @@ function buildPreference(data) {
 
   const testCustomer = {
     id: 613497413,
+
     nickname: 'TESTRQFT8LGC',
     password: 'qatest3623',
     site_status: 'active',
@@ -48,7 +49,7 @@ function buildPreference(data) {
       pending: `${process.env.UI_BASE_URL}/payments`,
       failure: `${process.env.UI_BASE_URL}/payments`
     },
-    notification_url: `${process.env.API_URL}:${process.env.PORT}/${process.env.API_VER}/payments/webhook`,
+    notification_url: `https://api.napule.tk/v1/payments/webhook?source_news=webhooks`,
     auto_return: 'approved'
   };
 }
