@@ -1,11 +1,9 @@
+const Payment = require('./payment.model');
+
 function buildPreference(data) {
   const { id, items, customer } = data;
   const mpItems = _buildPreferenceItems(items);
-  const excludedPaymentTypes = [
-    { id: 'ticket' },
-    { id: 'atm' },
-    { id: 'credit_card' }
-  ];
+  const excludedPaymentTypes = [{ id: 'ticket' }, { id: 'atm' }, { id: 'credit_card' }];
 
   // const testCustomer = {
   //   id: 613497413,
@@ -55,6 +53,15 @@ function buildPreference(data) {
   };
 }
 
+async function create(data) {
+  const payment = new Payment(data);
+  return payment.save();
+}
+
+async function findByOrder(orderId) {
+  return Payment.find({ orderId });
+}
+
 function _buildPreferenceItems(items) {
   return items.map(item => {
     const { quantity, pizza } = item;
@@ -62,7 +69,7 @@ function _buildPreferenceItems(items) {
       id: pizza.id,
       title: pizza.name,
       description: `Pizza con ${pizza.ingredients.join(', ')}`,
-      picture_url: `${process.env.UI_BASE_URL}/assets/img/${pizza.id}.png`,
+      picture_url: `${process.env.UI_BASE_URL}/assets/img/logoNapule.jpg`,
       category_id: 'pizzas',
       quantity,
       currency_id: 'ARS',
@@ -72,5 +79,7 @@ function _buildPreferenceItems(items) {
 }
 
 module.exports = {
-  buildPreference
+  buildPreference,
+  create,
+  findByOrder
 };

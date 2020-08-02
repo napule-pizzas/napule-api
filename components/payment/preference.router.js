@@ -3,6 +3,6 @@ const router = express.Router();
 
 const ctrl = require('./payment.controller');
 
-router.post('/webhook', ctrl.webhook);
+router.post('/', ctrl.preference);
 
 module.exports = router;

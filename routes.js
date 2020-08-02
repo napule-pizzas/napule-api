@@ -3,6 +3,7 @@ const usersRouter = require('./components/user/user.router.js');
 const pizzasRouter = require('./components/pizza/pizza.router');
 const ordersRouter = require('./components/order/order.router');
 const paymentsRouter = require('./components/payment/payment.router');
+const preferencesRouter = require('./components/payment/preference.router');
 
 const logRes = require('./libs/logger').logRes;
 
@@ -14,6 +15,7 @@ function init(app) {
   app.use(`/${v}/users`, usersRouter);
   app.use(`/${v}/pizzas`, pizzasRouter);
   app.use(`/${v}/orders`, ordersRouter);
+  app.use(`/${v}/preference`, preferencesRouter);
   app.use(`/${v}/payments`, paymentsRouter);
 
   app.use((req, res) => {
