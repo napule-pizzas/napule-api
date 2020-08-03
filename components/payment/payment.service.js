@@ -61,7 +61,7 @@ async function create(data) {
 }
 
 async function findByOrder(orderId) {
-  return Payment.find({ order: ObjectId(orderId) });
+  return Payment.find({ order: new ObjectId(orderId) });
 }
 
 function _buildPreferenceItems(items) {
