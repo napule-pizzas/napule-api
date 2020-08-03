@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const paymentSchema = new Schema(
   {
-    orderId: { type: Schema.Types.ObjectId, ref: 'Order' },
+    order: { type: Schema.Types.ObjectId, ref: 'Order', required: true },
     method: { type: String },
     status: { type: String }
   },
