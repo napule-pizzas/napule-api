@@ -4,6 +4,16 @@ const Pizza = require('../pizza/pizza.model');
 
 const Schema = mongoose.Schema;
 
+const OrderStateEnum = Object.freeze({
+  SELECTING_ITEMS: 'SELECTING_ITEMS',
+  SETTING_CUSTOMER_DATA: 'SETTING_CUSTOMER_DATA',
+  PREPARING: 'PREPARING',
+  PAYMENT_PENDING: 'PAYMENT_PENDING',
+  PAYMENT_FAILURE: 'PAYMENT_FAILURE',
+  PAID: 'PAID',
+  DELIVERED: 'DELIVERED'
+});
+
 const orderSchema = new Schema(
   {
     state: { type: String, required: true },
@@ -22,4 +32,7 @@ const orderSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Order', orderSchema);
+module.exports = {
+  Order: mongoose.model('Order', orderSchema),
+  OrderStateEnum
+};

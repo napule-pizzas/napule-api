@@ -1,5 +1,7 @@
 const Error = require('@hapi/boom');
 
+const { OrderStateEnum } = require('../order/order.model');
+
 const paymentService = require('./payment.service');
 
 const mercadopago = require('mercadopago');
@@ -35,15 +37,14 @@ async function webhook(req, res, next) {
     const data = req.body;
     if (data.type === 'payment') {
       const mpResponse = await mercadopago.payment.get(data.data.id);
-
-      console.log('MP PAYMENT', mpResponse);
-
       const orderId = mpResponse.body.external_reference.replace('pedido-', '');
       const payment = await paymentService.findByOrder(orderId);
+      payment.method = mpResponse.body.payment_method_id;
+      payment.status = mpResponse.body.status;
 
-      console.log('PAYMENT', payment);
-
-      payment.status = mpResponse.status;
+      if (payment.status === 'approved') {
+        payment.order.state = OrderStateEnum.PAID;
+      }
 
       payment.save();
     }
