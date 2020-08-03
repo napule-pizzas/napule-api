@@ -36,7 +36,7 @@ async function webhook(req, res, next) {
     if (data.type === 'payment') {
       const mpResponse = await mercadopago.payment.get(data.data.id);
 
-      console.log('MP PAYMENT', payment);
+      console.log('MP PAYMENT', mpResponse);
 
       const orderId = mpResponse.body.external_reference.replace('pedido-', '');
       const payment = await paymentService.findByOrder(orderId);
