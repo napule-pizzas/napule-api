@@ -1,3 +1,4 @@
+const ObjectId = require('mongoose').Types.ObjectId;
 const Payment = require('./payment.model');
 
 function buildPreference(data) {
@@ -60,7 +61,7 @@ async function create(data) {
 }
 
 async function findByOrder(orderId) {
-  return Payment.find({ orderId });
+  return Payment.find({ order: ObjectId(orderId) });
 }
 
 function _buildPreferenceItems(items) {
