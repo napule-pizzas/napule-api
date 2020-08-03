@@ -32,7 +32,6 @@ async function preference(req, res, next) {
 
 async function webhook(req, res, next) {
   try {
-    res.sendStatus(200);
     const data = req.body;
     if (data.type === 'payment') {
       const mpResponse = await mercadopago.payment.get(data.data.id);
@@ -46,6 +45,7 @@ async function webhook(req, res, next) {
 
       payment.save();
     }
+    res.sendStatus(200);
   } catch (e) {
     return next(
       Error.badImplementation(e, {
