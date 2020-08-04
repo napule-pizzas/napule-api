@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const { personSchema } = require('../user/user.model');
 const Pizza = require('../pizza/pizza.model');
 
+const { sendPrepareEmail } = require('../../libs/email');
+
 const Schema = mongoose.Schema;
 
 const OrderStateEnum = Object.freeze({
@@ -10,7 +12,6 @@ const OrderStateEnum = Object.freeze({
   PREPARING: 'PREPARING',
   PAYMENT_PENDING: 'PAYMENT_PENDING',
   PAYMENT_FAILURE: 'PAYMENT_FAILURE',
-  PAID: 'PAID',
   DELIVERED: 'DELIVERED'
 });
 
@@ -31,6 +32,12 @@ const orderSchema = new Schema(
   },
   { timestamps: true }
 );
+
+orderSchema.post('save', async function (order) {
+  if (order.state === OrderStateEnum.PREPARING) {
+    await sendPrepareEmail(order.toObject());
+  }
+});
 
 module.exports = {
   Order: mongoose.model('Order', orderSchema),

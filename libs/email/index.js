@@ -1,4 +1,11 @@
+const moment = require('moment');
+const handlebars = require('handlebars');
+handlebars.registerHelper('formatDate', function (datetime, format) {
+  return moment(datetime).format(format);
+});
+const fs = require('fs');
 const sgMail = require('@sendgrid/mail');
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function sendConfirmationEmail(user, token) {
@@ -21,6 +28,30 @@ async function sendConfirmationEmail(user, token) {
   return sgMail.send(msg);
 }
 
+async function sendPrepareEmail(order) {
+  const source = fs.readFileSync('./new-order-email.html', 'utf-8');
+  const template = handlebars.compile(source);
+  const html = template(order);
+
+  console.log(html);
+
+  const msg = {
+    to: {
+      name: `Cocina Napule`,
+      email: 'msenosiain@gmail.com'
+    },
+    from: {
+      name: 'Napule',
+      email: `${process.env.EMAIL_SENDER}`
+    },
+    subject: 'Nuevo Pedido',
+    html
+  };
+
+  return sgMail.send(msg);
+}
+
 module.exports = {
-  sendConfirmationEmail
+  sendConfirmationEmail,
+  sendPrepareEmail
 };

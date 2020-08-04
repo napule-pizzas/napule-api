@@ -1,0 +1,18 @@
+{{#with order}}
+<p>Hola</p>
+<p>Hay un nuevo pedido para el día <strong>{{formatDate deliveryDate 'dddd, DD-MM-YYYY'}}</strong>.</p>
+<p>Cliente: {{customer.firstName}} {{customer.lastName}}</p>
+<p>Teléfono: {{customer.phone.areaCode}} {{customer.phone.localNumber}}</p>
+<p>
+  Items:
+  <ul>
+    {{#each items}}
+    <li>{{quantity}} {{pizza.name}}</li>
+    {{/each}}
+  </ul>  
+  <strong>Total: ${{total}}</strong>
+</p>
+
+<p>Entregar en {{customer.address.street}} {{customer.address.number}}, {{customer.address.city}}</p>
+
+ {{/with}}
