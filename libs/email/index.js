@@ -46,7 +46,7 @@ async function sendPrepareEmail(order) {
       email: `${process.env.EMAIL_SENDER}`
     },
     subject: 'Nuevo Pedido',
-    html
+    html: html
   };
 
   return sgMail.send(msg);
