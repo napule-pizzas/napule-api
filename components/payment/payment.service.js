@@ -50,7 +50,7 @@ function buildPreference(data) {
       pending: `${process.env.UI_BASE_URL}/payments`,
       failure: `${process.env.UI_BASE_URL}/payments`
     },
-    notification_url: `https://api.napule.tk/v1/payments/webhook?source_news=webhooks`,
+    notification_url: `${process.env.API_URL}/${process.env.API_VER}/payments/webhook?source_news=webhooks`,
     auto_return: 'approved'
   };
 }

@@ -43,7 +43,9 @@ async function webhook(req, res, next) {
       payment.status = mpResponse.body.status;
 
       if (payment.status === 'approved') {
-        payment.order.state = OrderStateEnum.PAID;
+        const { order } = payment;
+        order.state = OrderStateEnum.PREPARING;
+        order.save();
       }
 
       payment.save();
