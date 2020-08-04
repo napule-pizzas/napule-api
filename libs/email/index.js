@@ -4,6 +4,7 @@ handlebars.registerHelper('formatDate', function (datetime, format) {
   return moment(datetime).format(format);
 });
 const fs = require('fs');
+const path = require('path');
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -29,7 +30,7 @@ async function sendConfirmationEmail(user, token) {
 }
 
 async function sendPrepareEmail(order) {
-  const source = fs.readFileSync('./new-order-email.html', 'utf-8');
+  const source = fs.readFileSync(path.resolve(__dirname, './new-order-email.html'), 'utf-8');
   const template = handlebars.compile(source);
   const html = template(order);
 
