@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
+const { sendPrepareEmail } = require('../../libs/email');
 const { personSchema } = require('../user/user.model');
 const Pizza = require('../pizza/pizza.model');
-
-const { sendPrepareEmail } = require('../../libs/email');
 
 const Schema = mongoose.Schema;
 
@@ -34,8 +33,12 @@ const orderSchema = new Schema(
 );
 
 orderSchema.post('save', async function (order) {
-  if (order.state === OrderStateEnum.PREPARING) {
-    await sendPrepareEmail(order.toObject());
+  try {
+    if (order.state === OrderStateEnum.PREPARING) {
+      await sendPrepareEmail(order.toObject());
+    }
+  } catch (e) {
+    console.error(e);
   }
 });
 
