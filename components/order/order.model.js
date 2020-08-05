@@ -35,7 +35,7 @@ const orderSchema = new Schema(
 orderSchema.post('save', async function (order) {
   try {
     if (order.state === OrderStateEnum.PREPARING) {
-      await sendPrepareEmail(order.toObject());
+      await sendPrepareEmail(order.toJSON());
     }
   } catch (e) {
     console.error(e);
