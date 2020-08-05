@@ -74,9 +74,7 @@ async function getInactiveByToken(req, res, next) {
     }
     const authUser = await userService.get(token._userId);
     if (!authUser) {
-      return res
-        .status(400)
-        .send({ msg: 'We were unable to find a user for this token.' });
+      return res.status(400).send({ msg: 'We were unable to find a user for this token.' });
     }
 
     if (authUser.active)
@@ -179,19 +177,6 @@ async function remove(req, res, next) {
     );
   }
 }
-
-// async function list(req, res, next) {
-//     try {
-//         const pagination = req.query;
-//         const year = moment().format('YYYY');
-//         const users = await User.find({ year });
-//         return res.ok({ success: true, users });
-//     } catch (e) {
-//         return next(Error.badImplementation(e, {
-//             msg: 'user_list'
-//         }));
-//     }
-// }
 
 module.exports = {
   validateParams: (rq, rs, nt) => nt(), // TODO: implement data validation

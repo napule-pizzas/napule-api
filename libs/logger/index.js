@@ -1,5 +1,6 @@
 const winston = require('winston');
 const moment = require('moment');
+moment.locale('es');
 
 const logger = winston.createLogger({
   level: 'debug',

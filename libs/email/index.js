@@ -1,4 +1,5 @@
 const moment = require('moment');
+moment.locale('es');
 const handlebars = require('handlebars');
 handlebars.registerHelper('formatDate', function (datetime, format) {
   return moment(datetime).format(format);
@@ -33,8 +34,6 @@ async function sendPrepareEmail(order) {
   const source = fs.readFileSync(path.resolve(__dirname, './new-order-email.html'), 'utf-8');
   const template = handlebars.compile(source);
   const html = template(order);
-
-  console.log(html);
 
   const msg = {
     to: {
