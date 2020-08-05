@@ -31,9 +31,12 @@ async function sendConfirmationEmail(user, token) {
 }
 
 async function sendPrepareEmail(order) {
+  console.log('ORDER=========', order);
   const source = fs.readFileSync(path.resolve(__dirname, './new-order-email.html'), 'utf-8');
   const template = handlebars.compile(source);
   const html = template(order);
+
+  console.log('TEMPLATE======', html);
 
   const msg = {
     to: {
