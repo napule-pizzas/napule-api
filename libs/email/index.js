@@ -1,7 +1,7 @@
 const moment = require('moment');
 moment.locale('es');
-const handlebars = require('handlebars');
-handlebars.registerHelper('formatDate', function (datetime, format) {
+const Handlebars = require('handlebars');
+Handlebars.registerHelper('formatDate', function (datetime, format) {
   return moment(datetime).format(format);
 });
 const fs = require('fs');
@@ -33,8 +33,8 @@ async function sendConfirmationEmail(user, token) {
 async function sendPrepareEmail(order) {
   console.log('ORDER=========', order);
   const source = fs.readFileSync(path.resolve(__dirname, './new-order-email.html'), 'utf-8');
-  const template = handlebars.compile(source);
-  const html = template(order);
+  const template = Handlebars.compile(source);
+  const html = template({ ...order });
 
   console.log('TEMPLATE======', html);
 

@@ -1,16 +1,35 @@
+<script id="new-order-email-template" type="text/x-handlebars-template">
+  <p>
+    Hola
+  </p>
+  <p>
+    Hay un nuevo pedido para el día
+    <strong style='text-transform: capitalize;'>
+      {{formatDate order.deliveryDate 'dddd, DD-MM-YYYY'}}
+    </strong>
+    .
+  </p>
+  <p>
+    Cliente: {{order.customer.firstName}} {{order.customer.lastName}}
+  </p>
+  <p>
+    Teléfono: {{order.customer.phone.areaCode}}-{{order.customer.phone.localNumber}}
+  </p>
+  <p>
+    Items:
+    <ul>
+      {{#each order.items}}
+        <li>
+          {{this.quantity}} {{this.pizza.name}}
+        </li>
+      {{/each}}
+    </ul>
+    <strong>
+      Total: ${{order.total}}
+    </strong>
+  </p>
 
-<p>Hola</p>
-<p>Hay un nuevo pedido para el día <strong style="text-transform: capitalize;">{{formatDate order.deliveryDate 'dddd, DD-MM-YYYY'}}</strong>.</p>
-<p>Cliente: {{order.customer.firstName}} {{order.customer.lastName}}</p>
-<p>Teléfono: {{order.customer.phone.areaCode}}-{{order.customer.phone.localNumber}}</p>
-<p>
-  Items:
-  <ul>
-    {{#each order.items}}
-    <li>{{quantity}} {{pizza.name}}</li>
-    {{/each}}
-  </ul>  
-  <strong>Total: ${{order.total}}</strong>
-</p>
-
-<p>Entregar en {{order.customer.address.street}} {{order.customer.address.number}}, {{order.customer.address.city}}</p>
+  <p>
+    Entregar en {{order.customer.address.street}} {{order.customer.address.number}}, {{order.customer.address.city}}
+  </p>
+</script>
