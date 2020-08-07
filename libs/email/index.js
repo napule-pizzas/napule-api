@@ -36,24 +36,26 @@ async function sendPrepareEmail(order) {
   const template = Handlebars.compile(source);
   const html = template({ ...order, directionsURL });
 
+  console.log('HTML======', html);
+
   const msg = {
     to: {
-      name: `Cocina Napule`,
-      email: 'msenosiain@gmail.com'
+      name: 'Cocina Napule',
+      email: process.env.EMAIL_NEW_ORDER
     },
     from: {
       name: 'Napule',
-      email: `${process.env.EMAIL_SENDER}`
+      email: process.env.EMAIL_SENDER
     },
     subject: 'Nuevo Pedido',
-    html: html
+    html
   };
 
   return sgMail.send(msg);
 }
 function _buildDirectionsUrl(address) {
   const destination = encodeURIComponent(`${address.street} ${address.number}, ${address.city.name}`);
-  return `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+  return `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${destination}`;
 }
 
 module.exports = {
