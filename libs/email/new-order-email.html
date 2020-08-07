@@ -5,31 +5,34 @@
   <p>
     Hay un nuevo pedido para el día
     <strong style='text-transform: capitalize;'>
-      {{formatDate order.deliveryDate 'dddd, DD-MM-YYYY'}}
+      {{formatDate deliveryDate 'dddd, DD-MM-YYYY'}}
     </strong>
     .
   </p>
   <p>
-    Cliente: {{order.customer.firstName}} {{order.customer.lastName}}
+    Cliente: {{customer.firstName}} {{customer.lastName}}
   </p>
   <p>
-    Teléfono: {{order.customer.phone.areaCode}}-{{order.customer.phone.localNumber}}
+    Teléfono: {{customer.phone.areaCode}}-{{customer.phone.localNumber}}
   </p>
   <p>
     Items:
     <ul>
-      {{#each order.items}}
+      {{#each items}}
         <li>
           {{this.quantity}} {{this.pizza.name}}
         </li>
       {{/each}}
     </ul>
     <strong>
-      Total: ${{order.total}}
+      Total: ${{total}}
     </strong>
   </p>
 
   <p>
-    Entregar en {{order.customer.address.street}} {{order.customer.address.number}}, {{order.customer.address.city}}
+    Entregar en {{customer.address.street}} {{customer.address.number}}, {{customer.address.city.name}}
+    <a href="{{{directionsURL}}}">
+      Indicaciones
+    </a>
   </p>
 </script>

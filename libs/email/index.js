@@ -31,12 +31,10 @@ async function sendConfirmationEmail(user, token) {
 }
 
 async function sendPrepareEmail(order) {
-  console.log('ORDER=========', order);
+  const directionsURL = _buildDirectionsUrl(order.customer.address);
   const source = fs.readFileSync(path.resolve(__dirname, './new-order-email.html'), 'utf-8');
   const template = Handlebars.compile(source);
-  const html = template({ ...order });
-
-  console.log('TEMPLATE======', html);
+  const html = template({ ...order, directionsURL });
 
   const msg = {
     to: {
@@ -52,6 +50,10 @@ async function sendPrepareEmail(order) {
   };
 
   return sgMail.send(msg);
+}
+function _buildDirectionsUrl(address) {
+  const destination = encodeURIComponent(`${address.street} ${address.number}, ${address.city.name}`);
+  return `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
 }
 
 module.exports = {
