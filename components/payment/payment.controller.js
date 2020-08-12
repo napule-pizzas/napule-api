@@ -16,7 +16,7 @@ async function preference(req, res, next) {
     const preference = paymentService.buildPreference(data);
     const mpResponse = await mercadopago.preferences.create(preference);
 
-    await paymentService.create({
+    await paymentService.createOrUpdate({
       order: data.id,
       status: 'pending',
       method: ''

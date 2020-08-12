@@ -21,7 +21,7 @@ async function get(req, res, next) {
   try {
     const _id = req.params.id;
     const order = await orderService.get(_id);
-    return res.ok({ order });
+    return res.ok(order.toObject(toObjectOptions));
   } catch (e) {
     return next(
       Error.badImplementation(e, {
@@ -36,7 +36,7 @@ async function update(req, res, next) {
     const data = req.body;
     const _id = req.params.id;
     const order = await orderService.update(_id, data);
-    return res.ok({ order });
+    return res.ok(order.toObject(toObjectOptions));
   } catch (e) {
     return next(
       Error.badImplementation(e, {

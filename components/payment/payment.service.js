@@ -55,9 +55,9 @@ function buildPreference(data) {
   };
 }
 
-async function create(data) {
-  const payment = new Payment(data);
-  return payment.save();
+async function createOrUpdate(data) {
+  const { order, status, method } = data;
+  return Payment.findOneAndUpdate({ order: new ObjectId(order) }, { status, method }, { new: true, upsert: true });
 }
 
 async function findByOrder(orderId) {
@@ -82,6 +82,6 @@ function _buildPreferenceItems(items) {
 
 module.exports = {
   buildPreference,
-  create,
+  createOrUpdate,
   findByOrder
 };
